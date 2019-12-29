@@ -61,17 +61,7 @@ class GoogleScraper(SearchScraper):
             response = await self._scrape_one(uri, headers, req.proxy)
             self.check_exceptions(response)
             self.parse_page(results, response)
-            print(len(results))
             if not idx == len(urls) - 1:
                 await asyncio.sleep(req.sleep)
-
         return results
 
-
-if __name__ == '__main__':
-    req = ScrapeRequest("flats for sale in essex", 200, sleep=120)
-    g = GoogleScraper(max_results=10)
-    loop = asyncio.get_event_loop()
-    res = loop.run_until_complete(g.scrape(req))
-    for r in res:
-        print(r)

@@ -66,12 +66,3 @@ class YandexScraper(SearchScraper):
                 await asyncio.sleep(req.sleep)
         return results
 
-
-if __name__ == '__main__':
-    yandex = YandexScraper()
-    req = ScrapeRequest("Купить квартиру в Лондоне", 10, sleep=60)
-    res = yandex.paginate(req.term, ".ru", YandexScraper.DEFAULT_GEO, req.count)
-    print(res)
-    loop = asyncio.get_event_loop()
-    res = loop.run_until_complete(yandex.scrape(req))
-    print(res)
