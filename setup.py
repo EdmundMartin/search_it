@@ -19,7 +19,7 @@ install_requires = [
 
 args = dict(
     name='searchit',
-    version='2019.12.29.0',
+    version='2019.12.29.1',
     description='Aysncio search engine scraping package',
     classifiers=[
         'Intended Audience :: Developers',

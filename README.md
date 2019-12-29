@@ -4,7 +4,7 @@ Searchit is a library for async scraping of search engines. The library supports
 
 # Using Searchit
 ```
-from searchit import GoogleScraper
+from searchit import GoogleScraper, YandexScraper, BingScraper
 from searchit import ScrapeRequest
 
 request = ScrapeRequest("watch movies online", 30)
@@ -22,6 +22,15 @@ This object can then be passed to multiple different search engines and scraped 
 term - Required str - the term to be searched for
 count - Required int - the total number of results
 domain - Optional[str] - the domain to search i.e. .com or .com
-sleep - Optional[int] - time to wait betweeen paginating pages
-
+sleep - Optional[int] - time to wait betweeen paginating pages - important to prevent getting blocked
+proxy - Optional[str] - proxy to be used to make request - default none
+language - Optional[str] - language to conduct search in (only Google atm)
+yandex_geo - Optional[str] - Yandex location code to conduct search from - default code for London
 ```
+
+## Roadmap
+* Resolve issues with Yandex
+* Add additional search engines
+* Tests
+* Blocking non-async scrape method
+* Add support for page rendering (Selenium and Puppeteer)
