@@ -82,11 +82,11 @@ class SearchScraper(metaclass=ABCMeta):
                 raise err
 
     @abstractmethod
-    def check_exceptions(self, res: ScrapeResponse) -> None:
+    def _check_exceptions(self, res: ScrapeResponse) -> None:
         pass
 
     @abstractmethod
-    def paginate(self, term: str, domain: str, language: str, count: int) -> List[str]:
+    def _paginate(self, term: str, domain: str, language: str, count: int) -> List[str]:
         pass
 
     @abstractmethod

@@ -27,7 +27,7 @@ class YandexScraper(SearchScraper):
 
         self.max_results = _check_config(max_results_per_page)
 
-    def parse_page(self, results: List[SearchResult], res: ScrapeResponse):
+    def _parse_page(self, results: List[SearchResult], res: ScrapeResponse):
         rank = len(results) + 1
         soup = bs4.BeautifulSoup(res.html)
         for block in soup.find_all("ul", attrs={"class": "serp-list"}):
@@ -48,7 +48,7 @@ class YandexScraper(SearchScraper):
             results.append(SearchResult(rank, link, title, description))
             rank += 1
 
-    def paginate(self, term: str, domain: str, location: str, count: int) -> List[str]:
+    def _paginate(self, term: str, domain: str, location: str, count: int) -> List[str]:
         urls = []
         done = 0
         pg = 0
@@ -60,20 +60,28 @@ class YandexScraper(SearchScraper):
             pg += 1
         return urls
 
-    def check_exceptions(self, res: ScrapeResponse):
+    def _check_exceptions(self, res: ScrapeResponse):
         if res.status >= 400:
             raise BlockedException("Yandex has blocked this request")
 
-    async def scrape(self, request: ScrapeRequest):
+    async def scrape(self, request: ScrapeRequest) -> List[SearchResult]:
         domain = request.domain if request.domain else ".ru"
         location = request.yandex_geo if request.yandex_geo else self.DEFAULT_GEO
-        urls = self.paginate(request.term, domain, location, request.count)
+        urls = self._paginate(request.term, domain, location, request.count)
         headers = self.user_agent()
         results = []
         for idx, uri in enumerate(urls):
             response = await self._scrape_one(uri, headers, request.proxy)
-            self.check_exceptions(response)
-            self.parse_page(results, response)
+            self._check_exceptions(response)
+            self._parse_page(results, response)
             if not idx == len(urls) - 1:
                 await asyncio.sleep(request.sleep)
         return results
+
+
+if __name__ == '__main__':
+    y = YandexScraper()
+    request = ScrapeRequest("Екатерина Мартин", 10)
+    loop = asyncio.get_event_loop()
+    result = loop.run_until_complete(y.scrape(request))
+    print(result)
