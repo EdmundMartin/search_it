@@ -26,6 +26,7 @@ args = dict(
     version='2019.12.29.1',
     description='Aysncio search engine scraping package',
     long_description=read("README.md"),
+    long_description_content_type='text/markdown',
     classifiers=[
         'Intended Audience :: Developers',
         'Programming Language :: Python',
