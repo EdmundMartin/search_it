@@ -12,15 +12,20 @@ here = pathlib.Path(__file__).parent
 
 
 install_requires = [
-    'aiohttp>=3.6.2'
-    'beautifulsoup4>=4.8.2'
+    'aiohttp>=3.6.2',
+    'beautifulsoup4>=4.8.2',
 ]
+
+
+def read(f):
+    return (here / f).read_text('utf-8').strip()
 
 
 args = dict(
     name='searchit',
-    version='2019.12.29.0',
+    version='2019.12.29.1',
     description='Aysncio search engine scraping package',
+    long_description=read("README.md"),
     classifiers=[
         'Intended Audience :: Developers',
         'Programming Language :: Python',
