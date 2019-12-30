@@ -4,7 +4,7 @@ from setuptools import find_packages
 from distutils.core import setup
 
 
-if sys.version_info < (3, 5, 3):
+if sys.version_info <= (3, 5, 3):
     raise RuntimeError("aiohttp 3.x requires Python 3.5.3+")
 
 
@@ -23,7 +23,7 @@ def read(f):
 
 args = dict(
     name='searchit',
-    version='2019.12.29.1',
+    version='2019.12.30.1',
     description='Aysncio search engine scraping package',
     long_description=read("README.md"),
     long_description_content_type='text/markdown',
