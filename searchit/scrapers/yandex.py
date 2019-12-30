@@ -12,9 +12,15 @@ from searchit.scrapers.scraper import (
 from searchit.exceptions import BlockedException, ConfigException
 
 
+def _clean_yandex_url(url: str) -> str:
+    if url.startswith("//"):
+        return f"https:{url}"
+    return url
+
+
 def _check_config(max_results: int):
     if max_results > 30:
-        raise ConfigException('Yandex max results cannot be larger than 30')
+        raise ConfigException("Yandex max results per page cannot be larger than 30")
     return max_results
 
 
@@ -30,22 +36,19 @@ class YandexScraper(SearchScraper):
     def _parse_page(self, results: List[SearchResult], res: ScrapeResponse):
         rank = len(results) + 1
         soup = bs4.BeautifulSoup(res.html)
-        for block in soup.find_all("ul", attrs={"class": "serp-list"}):
-            link = block.find("a", href=True)
-            if link:
-                link = link["href"]
-
-            if not link.startswith("//"):
+        for block in soup.find_all("li", attrs={"class": "serp-item"}):
+            title_block = block.find("h2", attrs={"class": "organic__title-wrapper"})
+            if not title_block:
                 continue
-            title = block.find("h2")
-            if title:
-                title = title.get_text()
-
-            description = soup.find("div", {"class": "organic__content-wrapper"})
+            title_text = title_block.get_text()
+            url = title_block.find("a", href=True)
+            if url:
+                url = _clean_yandex_url(url["href"])
+            description = block.find("div", attrs={"class": "text-container"})
             if description:
-                description = block.get_text()
+                description = description.get_text()
 
-            results.append(SearchResult(rank, link, title, description))
+            results.append(SearchResult(rank, url, title_text, description))
             rank += 1
 
     def _paginate(self, term: str, domain: str, location: str, count: int) -> List[str]:
@@ -79,7 +82,7 @@ class YandexScraper(SearchScraper):
         return results
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     y = YandexScraper()
     request = ScrapeRequest("Екатерина Мартин", 10)
     loop = asyncio.get_event_loop()
