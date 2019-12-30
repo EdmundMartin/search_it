@@ -35,7 +35,7 @@ domain - Optional[str] - the domain to search i.e. .com or .com
 sleep - Optional[int] - time to wait betweeen paginating pages - important to prevent getting blocked
 proxy - Optional[str] - proxy to be used to make request - default none
 language - Optional[str] - language to conduct search in (only Google atm)
-yandex_geo - Optional[str] - Yandex location code to conduct search from - default code for London
+geo - Optional[str] - Geo location to conduct search from Yandex, and Qwant
 ```
 
 ## Roadmap
