@@ -39,7 +39,6 @@ yandex_geo - Optional[str] - Yandex location code to conduct search from - defau
 ```
 
 ## Roadmap
-* Resolve issues with Yandex
 * Add additional search engines
 * Tests
 * Blocking non-async scrape method
