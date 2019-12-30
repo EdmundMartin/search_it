@@ -69,7 +69,7 @@ class YandexScraper(SearchScraper):
 
     async def scrape(self, request: ScrapeRequest) -> List[SearchResult]:
         domain = request.domain if request.domain else ".ru"
-        location = request.yandex_geo if request.yandex_geo else self.DEFAULT_GEO
+        location = request.geo if request.geo else self.DEFAULT_GEO
         urls = self._paginate(request.term, domain, location, request.count)
         headers = self.user_agent()
         results = []

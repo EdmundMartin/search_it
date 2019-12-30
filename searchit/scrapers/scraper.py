@@ -25,7 +25,7 @@ class ScrapeRequest:
         sleep: int = 0,
         proxy: Optional[str] = None,
         language: Optional[str] = None,
-        yandex_geo: Optional[str] = None,
+        geo: Optional[str] = None,
     ):
         self.term = term
         self.count = count
@@ -33,12 +33,13 @@ class ScrapeRequest:
         self.sleep = sleep
         self.proxy = proxy
         self.language = language
-        self.yandex_geo = yandex_geo
+        self.geo = geo
 
 
 class ScrapeResponse:
-    def __init__(self, html: str, status: int):
+    def __init__(self, html: str, status: int, json: Optional[Dict] = None):
         self.html = html
+        self.json = json
         self.status = status
 
     def __repr__(self):
