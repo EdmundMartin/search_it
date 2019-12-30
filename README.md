@@ -16,8 +16,8 @@ from searchit import GoogleScraper, YandexScraper, BingScraper
 from searchit import ScrapeRequest
 
 request = ScrapeRequest("watch movies online", 30)
-google = GoogleScraper(max_results=10) # max_results = Number of results per page
-yandex = YandexScraper(max_results=10)
+google = GoogleScraper(max_results_per_page=10) # max_results = Number of results per page
+yandex = YandexScraper(max_results_per_page=10)
 
 loop = asyncio.get_event_loop()
 
