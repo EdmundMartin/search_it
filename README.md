@@ -2,8 +2,16 @@
 Searchit is a library for async scraping of search engines. The library supports multiple search engines 
 (currently Google, Yandex, and Bing) with support for other search engines to come.
 
-# Using Searchit
+# Install
 ```
+pip install searchit
+```
+Can be installed using pip, by running the above command.
+
+# Using Searchit
+```python
+import asyncio
+
 from searchit import GoogleScraper, YandexScraper, BingScraper
 from searchit import ScrapeRequest
 
@@ -11,8 +19,10 @@ request = ScrapeRequest("watch movies online", 30)
 google = GoogleScraper(max_results=10) # max_results = Number of results per page
 yandex = YandexScraper(max_results=10)
 
-results = await google.scrape(request)
-results = await yandex.scrape(request)
+loop = asyncio.get_event_loop()
+
+results = loop.run_until_complete(google.scrape(request))
+results = loop.run_until_complete(yandex.scrape(request))
 ```
 To use Searchit users first create a ScrapeRequest object, with term and number of results as required fields. 
 This object can then be passed to multiple different search engines and scraped asynchronously.
@@ -29,7 +39,6 @@ yandex_geo - Optional[str] - Yandex location code to conduct search from - defau
 ```
 
 ## Roadmap
-* Resolve issues with Yandex
 * Add additional search engines
 * Tests
 * Blocking non-async scrape method

@@ -1,5 +1,3 @@
-
-
 class BlockedException(Exception):
     pass
 

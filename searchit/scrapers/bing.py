@@ -9,13 +9,13 @@ from searchit.exceptions import BlockedException, ConfigException
 
 def _check_config(max_results: int):
     if max_results > 30:
-        raise ConfigException('Bing max results per page cannot be larger than 30')
+        raise ConfigException("Bing max results per page cannot be larger than 30")
     return max_results
 
 
 class BingScraper(SearchScraper):
 
-    BASE_URL = 'https://www.bing.com/search?q={}&first={}&count={}'
+    BASE_URL = "https://www.bing.com/search?q={}&first={}&count={}"
 
     def __init__(self, max_results_per_page: int = 10):
         self.max_results = _check_config(max_results_per_page)
@@ -23,21 +23,21 @@ class BingScraper(SearchScraper):
     def _parse_page(self, results: List[SearchResult], resp: ScrapeResponse) -> None:
         rank = len(results) + 1
         soup = bs4.BeautifulSoup(resp.html)
-        for block in soup.find_all('li',attrs={'class': 'b_algo'}):
-            link = block.find('a', href=True)
+        for block in soup.find_all("li", attrs={"class": "b_algo"}):
+            link = block.find("a", href=True)
             if link:
-                link = link['href']
+                link = link["href"]
 
             if not link:
                 continue
 
-            title = block.find('h2')
+            title = block.find("h2")
             if title:
                 title = title.get_text()
 
-            description = block.find('div', {'class': 'b_caption'})
+            description = block.find("div", {"class": "b_caption"})
             if description:
-                description = description.find('p')
+                description = description.find("p")
                 if description:
                     description = description.get_text()
             results.append(SearchResult(rank, link, title, description))
@@ -70,4 +70,3 @@ class BingScraper(SearchScraper):
             if not idx == len(urls) - 1:
                 await asyncio.sleep(req.sleep)
         return results
-
