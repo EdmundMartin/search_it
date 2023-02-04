@@ -1,6 +1,6 @@
 # searchit
 Searchit is a library for async scraping of search engines. The library supports multiple search engines 
-(currently Google, Yandex, and Bing) with support for other search engines to come.
+(currently Google, Yandex, Qwant and Bing) with support for other search engines to come.
 
 # Install
 ```

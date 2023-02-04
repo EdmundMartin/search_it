@@ -16,7 +16,7 @@ class GoogleScraper(SearchScraper):
 
     def _parse_page(self, results: List[SearchResult], res: ScrapeResponse) -> None:
         rank = len(results) + 1
-        soup = bs4.BeautifulSoup(res.html)
+        soup = bs4.BeautifulSoup(res.html, features="html.parser")
         for block in soup.find_all("div", attrs={"class": "g"}):
             link = block.find("a", href=True)
             if link:
@@ -29,7 +29,7 @@ class GoogleScraper(SearchScraper):
             if title:
                 title = title.get_text()
 
-            description = block.find("span", {"class": "st"})
+            description = block.find("div", {"data-content-feature": "1"})
             if description:
                 description = description.get_text()
             results.append(SearchResult(rank, link, title, description))
