@@ -14,6 +14,7 @@ here = pathlib.Path(__file__).parent
 install_requires = [
     'aiohttp>=3.6.2',
     'beautifulsoup4>=4.8.2',
+    'lxml'
 ]
 
 
