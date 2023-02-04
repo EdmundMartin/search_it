@@ -22,7 +22,7 @@ class BingScraper(SearchScraper):
 
     def _parse_page(self, results: List[SearchResult], resp: ScrapeResponse) -> None:
         rank = len(results) + 1
-        soup = bs4.BeautifulSoup(resp.html)
+        soup = bs4.BeautifulSoup(resp.html, features="lxml")
         for block in soup.find_all("li", attrs={"class": "b_algo"}):
             link = block.find("a", href=True)
             if link:
