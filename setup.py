@@ -23,7 +23,7 @@ def read(f):
 
 args = dict(
     name='searchit',
-    version='2019.12.30.2',
+    version='2023.02.05.1',
     description='Aysncio search engine scraping package',
     long_description=read("README.md"),
     long_description_content_type='text/markdown',
