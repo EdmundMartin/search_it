@@ -1,5 +1,5 @@
 import asyncio
-from typing import List
+from typing import List, Dict
 
 import bs4
 
@@ -19,14 +19,14 @@ def _clean_yandex_url(url: str) -> str:
 
 
 def _check_config(max_results: int):
-    if max_results > 30:
-        raise ConfigException("Yandex max results per page cannot be larger than 30")
+    if max_results > 10:
+        raise ConfigException("Yandex max results per page cannot be larger than 10")
     return max_results
 
 
 class YandexScraper(SearchScraper):
 
-    BASE_URL = "https://yandex{}/search/?text={}&lr={}&numdoc={}&pg={}"
+    BASE_URL = "https://yandex{}/search/?text={}&lr={}&p={}"
     DEFAULT_GEO = "10394"
 
     def __init__(self, max_results_per_page: int = 10):
@@ -67,6 +67,14 @@ class YandexScraper(SearchScraper):
         if res.status >= 400:
             raise BlockedException("Yandex has blocked this request")
 
+    @staticmethod
+    def user_agent() -> Dict[str, str]:
+        return {
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+            "sec-ch-ua": """Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109""",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
+        }
+
     async def scrape(self, request: ScrapeRequest) -> List[SearchResult]:
         domain = request.domain if request.domain else ".ru"
         location = request.geo if request.geo else self.DEFAULT_GEO
@@ -82,9 +90,3 @@ class YandexScraper(SearchScraper):
         return results
 
 
-if __name__ == "__main__":
-    y = YandexScraper()
-    request = ScrapeRequest("Екатерина Мартин", 10)
-    loop = asyncio.get_event_loop()
-    result = loop.run_until_complete(y.scrape(request))
-    print(result)

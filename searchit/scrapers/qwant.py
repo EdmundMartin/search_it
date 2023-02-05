@@ -16,8 +16,8 @@ def _check_config(max_results: int):
 class QwantScraper(SearchScraper):
 
     BASE_URL = (
-        "https://api.qwant.com/api/search/web?count={}&offset={}"
-        "&q={}&t=web&device=tablet&extensionDisabled=true&safesearch=0&locale={}&uiv=4"
+        "https://api.qwant.com/v3/search/web?count={}&offset={}"
+        "&q={}&t=web&device=desktop&extensionDisabled=true&safesearch=0&locale={}&uiv=4"
     )
 
     def __init__(self, max_results_per_page: int = 10):
@@ -37,12 +37,20 @@ class QwantScraper(SearchScraper):
                 raise err
 
     def _parse_json(self, results: List[SearchResult], resp: ScrapeResponse) -> None:
-        data = resp.json["data"]["result"]["items"]
-        for search_result in data:
+        data = resp.json['data']['result']['items']["mainline"]
+        items: List[Dict] = []
+        for listing in data:
+            context = listing.get('items')
+            if context:
+                for c in context:
+                    items.append(c)
+        for search_result in items:
             title = search_result.get("title")
             url = search_result.get("url")
+            if url is None:
+                continue
             description = search_result.get("description")
-            position = search_result.get("position")
+            position = len(results) + 1
             results.append(SearchResult(position, url, title, description))
 
     def _paginate(self, term: str, _: str, geo: str, count: int):
