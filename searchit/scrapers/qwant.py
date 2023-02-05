@@ -6,7 +6,6 @@ from aiohttp import ClientSession, ClientError
 from searchit.scrapers import SearchScraper, ScrapeRequest, SearchResult, ScrapeResponse
 from searchit.exceptions import BlockedException, ConfigException
 
-
 def _check_config(max_results: int):
     if max_results > 10:
         raise ConfigException("Qwant max results per page cannot be larger than 10")
@@ -37,7 +36,7 @@ class QwantScraper(SearchScraper):
                 raise err
 
     def _parse_json(self, results: List[SearchResult], resp: ScrapeResponse, n: int) -> None:
-        data = resp.json['data']['result']['items']['mainline'][0]['items']
+        data = resp.json['data']['result']['items']['mainline'][-1]['items']
         for search_result in data:
             n += 1
             title = search_result.get("title")
