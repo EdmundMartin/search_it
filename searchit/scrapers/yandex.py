@@ -35,7 +35,7 @@ class YandexScraper(SearchScraper):
 
     def _parse_page(self, results: List[SearchResult], res: ScrapeResponse):
         rank = len(results) + 1
-        soup = bs4.BeautifulSoup(res.html)
+        soup = bs4.BeautifulSoup(res.html, "html.parser")
         for block in soup.find_all("li", attrs={"class": "serp-item"}):
             title_block = block.find("h2", attrs={"class": "organic__title-wrapper"})
             if not title_block:

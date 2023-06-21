@@ -25,7 +25,7 @@ class QwantScraper(SearchScraper):
 
     async def _scrape_one(
         self, url: str, headers: Dict[str, str], proxy: Optional[str]
-    ):
+    ) -> ScrapeResponse:
         async with ClientSession() as client:
             try:
                 async with client.get(
